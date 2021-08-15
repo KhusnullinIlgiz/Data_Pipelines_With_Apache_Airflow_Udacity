@@ -119,7 +119,7 @@ run_quality_checks = DataQualityOperator(
 # Last task in pipeline for defining job's end
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
-
+#Creating consequent execution steps for Airflow
 start_operator >> stage_events_to_redshift
 start_operator >> stage_songs_to_redshift
 stage_events_to_redshift >> load_songplays_table
