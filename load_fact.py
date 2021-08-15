@@ -10,11 +10,13 @@ class LoadFactOperator(BaseOperator):
     def __init__(self,
                  redshift_conn_id ="",
                  query = "",
+                 table = "",
                  *args, **kwargs):
 
         super(LoadFactOperator, self).__init__(*args, **kwargs)
-        self.redshift_conn_id = redshift_conn_id,
-        self.query = query
+        self.redshift_conn_id = redshift_conn_id
+        self.table = table
+        self.query =  "INSERT INTO " + self.table + " " + query
 
     def execute(self, context):
         redshift_hook = PostgresHook(postgres_conn_id = self.redshift_conn_id)

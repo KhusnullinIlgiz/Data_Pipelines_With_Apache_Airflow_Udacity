@@ -19,6 +19,7 @@ class StageToRedshiftOperator(BaseOperator):
                  aws_credentials_id = "",
                  table="",
                  s3_bucket="",
+                 json_format = "",
                  *args, **kwargs):
 
         super(StageToRedshiftOperator, self).__init__(*args, **kwargs)
@@ -26,12 +27,15 @@ class StageToRedshiftOperator(BaseOperator):
         self.aws_credentials_id = aws_credentials_id
         self.table = table
         self.s3_bucket = s3_bucket
+        self.json_format = json_format
 
     def execute(self, context):
         aws_hook = AwsHook(self.aws_credentials_id)
         aws_credentials = aws_hook.get_credentials()
-        redshift_hook = PostgresHook(postgres_conn_id = self.redshift_conn_id)             
-        redshift_hook.run(self.run_query.format(self.table,self.s3_bucket,aws_credentials.access_key,aws_credentials.secret_key,'auto' ))
+        redshift_hook = PostgresHook(postgres_conn_id = self.redshift_conn_id)
+        #deleting from table
+        redshift_hook.run("DELETE FROM {table}".format(table = self.table))
+        redshift_hook.run(self.run_query.format(self.table,self.s3_bucket,aws_credentials.access_key,aws_credentials.secret_key, self.json_format ))
 
 
 

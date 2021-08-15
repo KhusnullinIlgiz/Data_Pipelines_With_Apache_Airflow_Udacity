@@ -17,9 +17,12 @@ class DataQualityOperator(BaseOperator):
         self.tables = tables
 
     def execute(self, context):
+        """
+        Executing sql statement in redshift for each table to check data quality
+        """
         redshift_hook = PostgresHook(postgres_conn_id = self.redshift_conn_id)
         for table in self.tables:
-            count_rows = redshift_hook.run("SELECT * FROM {}".format(table))
+            count_rows = redshift_hook.get_records("SELECT COUNT(*) FROM {}".format(table))
             if count_rows == None or count_rows == 0:
                 raise ValueError("{} is empty".format(table))
             else:

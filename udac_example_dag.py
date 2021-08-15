@@ -7,14 +7,15 @@ from operators.load_fact import LoadFactOperator
 from operators.load_dimension import LoadDimensionOperator
 from operators.data_quality import DataQualityOperator
                                 
-from helpers import SqlQueries
+from helpers.sql_queries import SqlQueries
 
 # AWS_KEY = os.environ.get('AWS_KEY')
 # AWS_SECRET = os.environ.get('AWS_SECRET')
 
 #S3 bucket addresses for log/song files
 s3_log_bucket = "s3://udacity-dend/log_data"
-s3_song_bucket = "s3://udacity-dend/song_data"
+s3_song_bucket = "s3://udacity-dend/song_data/A/A/A/TRAAAAK128F9318786.json"
+LOG_JSONPATH= "s3://udacity-dend/log_json_path.json"
 
 #Default arguments for DAG
 default_args = {
@@ -44,6 +45,7 @@ stage_events_to_redshift = StageToRedshiftOperator(
     redshift_conn_id = "redshift",
     aws_credentials_id = "aws_credentials",
     table = "staging_events",
+    json_format = LOG_JSONPATH,
     s3_bucket = s3_log_bucket
     
 )
@@ -56,6 +58,7 @@ stage_songs_to_redshift = StageToRedshiftOperator(
     aws_credentials_id='aws_credentials',
     redshift_conn_id='redshift',
     table = "staging_songs",
+    json_format = "auto",
     s3_bucket = s3_song_bucket
 )
 
@@ -64,8 +67,8 @@ load_songplays_table = LoadFactOperator(
     task_id='Load_songplays_fact_table',
     dag=dag,
     redshift_conn_id='redshift',
-    query = SqlQueries.songplay_table_insert,
-    table = "songplays"
+    table = "songplays",
+    query = SqlQueries.songplay_table_insert
 
 )
 #Insert Data from stage_events/song_events tables to users table in redshift

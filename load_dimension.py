@@ -16,11 +16,15 @@ class LoadDimensionOperator(BaseOperator):
 
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
         self.redshift_conn_id = redshift_conn_id
-        self.query = query
-        self.delete_mode = delete_mode
         self.table = table
+        self.query = "INSERT INTO " + self.table + " " + query
+        self.delete_mode = delete_mode
+        
 
     def execute(self, context):
+        """
+        Executing sql statement in redshift for dimention table to insert values
+        """
         redshift_hook = PostgresHook(postgres_conn_id = self.redshift_conn_id)
         if self.delete_mode:
             redshift_hook.run("DELETE FROM {table}".format(table = self.table))
