@@ -14,7 +14,7 @@ from helpers.sql_queries import SqlQueries
 
 #S3 bucket addresses for log/song files
 s3_log_bucket = "s3://udacity-dend/log_data"
-s3_song_bucket = "s3://udacity-dend/song_data/A/A/A/TRAAAAK128F9318786.json"
+s3_song_bucket = "s3://udacity-dend/song_data"
 LOG_JSONPATH= "s3://udacity-dend/log_json_path.json"
 
 #Default arguments for DAG
