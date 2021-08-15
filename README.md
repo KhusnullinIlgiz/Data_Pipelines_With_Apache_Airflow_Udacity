@@ -1,7 +1,7 @@
 # Data Pipelines with Airflow Udacity
 
 ## Goal of this project :blush: 
-The goal of this project is to create an ETL process to extract, transform and load data from existing JSON log and song files from S3 bucket to AWS Redshift Datawarehouse using Apache Airflow to automate as much as possible ETL process. Star Schema of tables in Redshift allows quick analysys of data by using simple queries without JOIN statements. Apache Airflow allows to schedule tasks and see the execution status of Pipeline steps.
+Goal of this project is to create an ETL process to extract, transform and load data from existing JSON log and song files from S3 bucket to AWS Redshift Datawarehouse using Apache Airflow to automate as much as possible ETL process. Star Schema of tables in Redshift allows quick analysys of data by using simple queries without JOIN statements. Apache Airflow allows to schedule tasks and see the execution status of Pipeline steps.
 
 
 # Projects Pipeline
