@@ -14,7 +14,7 @@ from helpers.sql_queries import SqlQueries
 
 #S3 bucket addresses for log/song files
 s3_log_bucket = "s3://udacity-dend/log_data"
-s3_song_bucket = "s3://udacity-dend/song_data"
+s3_song_bucket = "s3://udacity-dend/song_data/A/A/A/TRAAAAK128F9318786.json"
 LOG_JSONPATH= "s3://udacity-dend/log_json_path.json"
 
 #Default arguments for DAG
@@ -116,7 +116,7 @@ run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     dag=dag,
     redshift_conn_id='redshift',
-    tables = ["staging_events","staging_songs","songplays","users","songs","artists","time"]
+    tables_qry = [{"table":"staging_events","expected_result":"8056"},{"table":"staging_songs","expected_result":"1"},{"table":"songplays","expected_result":"6820"},{"table":"users","expected_result":"104"},{"table":"songs","expected_result":"1"},{"table":"artists","expected_result":"1"},{"table":"time","expected_result":"6820"}]
 )
 
 # Last task in pipeline for defining job's end

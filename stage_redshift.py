@@ -30,12 +30,17 @@ class StageToRedshiftOperator(BaseOperator):
         self.json_format = json_format
 
     def execute(self, context):
+        
         aws_hook = AwsHook(self.aws_credentials_id)
+        self.log.info("Getting credentials for AWS: {}".format(aws_hook.get_credentials()))
         aws_credentials = aws_hook.get_credentials()
+        self.log.info("Getting credentials for Redshift: {}".format(self.redshift_conn_id))
         redshift_hook = PostgresHook(postgres_conn_id = self.redshift_conn_id)
-        #deleting from table
+        self.log.info("Deleting content of {}".format(self.table))
         redshift_hook.run("DELETE FROM {table}".format(table = self.table))
+        self.log.info("Running COPY {} query from {} bucket".format(self.table, self.s3_bucket))
         redshift_hook.run(self.run_query.format(self.table,self.s3_bucket,aws_credentials.access_key,aws_credentials.secret_key, self.json_format ))
+        self.log.info("COPY FINISHED")
 
 
 
